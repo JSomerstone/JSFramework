@@ -1,6 +1,7 @@
 <?php
+namespace keijoCMS\Core;
 
-class Core_Exception extends Exception
+class Exception extends Exception
 {
-    
+
 }

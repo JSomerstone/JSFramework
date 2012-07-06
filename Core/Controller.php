@@ -1,5 +1,7 @@
 <?php
-abstract class Core_Controller
+namespace keijoCMS\Core;
+
+abstract class Controller
 {
     /**
      * Placeholder for View-object

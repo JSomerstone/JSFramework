@@ -1,6 +1,7 @@
 <?php
+namespace keijoCMS\Core;
 
-abstract class Core_View
+abstract class View
 {
     /**
      * @var array $data

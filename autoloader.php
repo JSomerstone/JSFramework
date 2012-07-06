@@ -8,7 +8,14 @@ defined('DS') OR define('DS', DIRECTORY_SEPARATOR);
 function autoloadClass($className)
 {
 
-    $pathToFile = str_replace('_', DS, $className) . '.php';
+    $namespaceParts = explode('\\', $className);
+
+    if ($namespaceParts[0] === 'keijoCMS')
+    {
+        array_shift($namespaceParts);
+    }
+    $pathToFile = implode(DS, $namespaceParts) . '.php';
+    
     if (!file_exists($pathToFile))
     {
         die ("Unable to find class '$className' from '$pathToFile'");

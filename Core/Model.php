@@ -1,6 +1,7 @@
 <?php
+namespace keijoCMS\Core;
 
-abstract class Core_Model
+abstract class Model
 {
-    
+
 }
