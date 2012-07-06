@@ -14,8 +14,8 @@ function autoloadClass($className)
     {
         array_shift($namespaceParts);
     }
-    $pathToFile = implode(DS, $namespaceParts) . '.php';
-    
+    $pathToFile = __DIR__ . DS . implode(DS, $namespaceParts) . '.php';
+
     if (!file_exists($pathToFile))
     {
         die ("Unable to find class '$className' from '$pathToFile'");
@@ -24,3 +24,8 @@ function autoloadClass($className)
 }
 
 spl_autoload_register("autoloadClass");
+
+function D($value)
+{
+    var_dump($value);
+}

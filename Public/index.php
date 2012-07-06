@@ -1,4 +1,5 @@
 <?php
 include __DIR__.'/../autoloader.php';
 
-echo 'Hello world';
+$mainController = new keijoCMS\Controller\Index();
+$mainController->run();
