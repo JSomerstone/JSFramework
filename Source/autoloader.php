@@ -15,7 +15,7 @@ function autoloadClass($className)
     {
         array_shift($namespaceParts);
     }
-    $pathToFile = __DIR__ . DS . 'Source' . DS . implode(DS, $namespaceParts) . '.php';
+    $pathToFile = __DIR__ . DS . implode(DS, $namespaceParts) . '.php';
 
     if (!file_exists($pathToFile))
     {
