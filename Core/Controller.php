@@ -9,6 +9,17 @@ abstract class Controller
      */
     public $view;
 
+    /**
+     * Request-object
+     * @var keijoCMS\Core\Request
+     */
+    protected $request;
+    protected $requestedAction = 'index';
+
+    public function __construct(Request $requestObject)
+    {
+        $this->request = $requestObject;
+    }
 
     protected function setup()
     {
@@ -22,6 +33,19 @@ abstract class Controller
     }
 
     /**
+     * Returns and unsets 'action' parameter from Request if any
+     * If 'action' GET-parameter is not given, will return 'index' as default
+     *
+     * @return string
+     */
+    protected function getRequestedAction()
+    {
+        $this->requestedAction = $this->request->getGet('action') ?: 'index';
+        return $this->requestedAction;
+    }
+
+
+    /**
      * Run controllers action
      */
     public function run()
@@ -30,27 +54,44 @@ abstract class Controller
         {
             $this->setup();
 
-            $this->commitAction('main');
+            $this->commitAction($this->getRequestedAction());
 
             $this->teardown();
         }
         catch (\keijoCMS\View\Exception $e)
         {
             $this->view->set('errorMessage', 'View reported an error : ' . $e->getMessage());
+            $this->view->setErrorCode(View::ERROR_CODE_INTERNAL_ERROR);
         }
         catch (\keijoCMS\Core\RootException $e)
         {
+            $this->view->set('errorMessage', 'Well, someone f****ed up : '. $e->getMessage());
+            $this->view->setErrorCode(View::ERROR_CODE_INTERNAL_ERROR);
+        }
+        catch (\Exception $fatal)
+        {
+            $errorHandle = fopen(STDERR, 'a');
+            fwrite($errorHandle, $fatal->getMessage() . NL . $fatal->getTraceAsString() . NL);
             $this->view->set('errorMessage', 'WTF just happened?!?');
+            $this->view->setErrorCode(View::ERROR_CODE_INTERNAL_ERROR);
         }
 
         $this->view->output();
     }
 
+    /**
+     * Returns reference of View's proparty $propartyName
+     * Shortcut to $this->view->bind()
+     *
+     * @param string $propertyName
+     * @param misc $initialValue, optional
+     * @return misc
+     */
     protected function &bindView($propertyName, $initialValue = null)
     {
         return $this->view->bind($propertyName, $initialValue);
     }
-    
+
     /**
      * Commit given action
      * @param string $actionName
@@ -66,7 +107,7 @@ abstract class Controller
         {
             throw new \keijoCMS\Controller\Exception(sprintf(
                 'Controller %s method %s is not callable',
-                __CLASS__,
+                get_class($this),
                 $actionName
             ));
         }

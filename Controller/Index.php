@@ -4,16 +4,18 @@ namespace keijoCMS\Controller;
 
 class Index extends \keijoCMS\Core\Controller
 {
-    public function setup()
+    public function index()
     {
-        $this->setView(new \keijoCMS\View\Index());
-    }
-
-    public function main()
-    {
-        $message = &$this->bindView('message', 'Abba');
-
-        $message = 'H3ll0 W0r1d!';
+        $this->setView(new \keijoCMS\View\EmptyView());
+        $controller = sprintf(
+                '\\keijoCMS\\Controller\\%s',
+                $this->request->getGet('controller') ?: 'ShowPage'
+        );
+        if (class_exists($controller))
+        {
+            $subController = new $controller($this->request);
+            $subController->run();
+        }
     }
 
 }

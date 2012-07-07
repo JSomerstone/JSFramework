@@ -3,6 +3,7 @@ defined('TIMEZONE') OR define('TIMEZONE', 'Europe/Helsinki');
 date_default_timezone_set(TIMEZONE);
 
 defined('DS') OR define('DS', DIRECTORY_SEPARATOR);
+defined('NL') OR define('NL', "\n");
 
 
 function autoloadClass($className)

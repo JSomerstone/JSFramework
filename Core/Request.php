@@ -100,4 +100,32 @@ class Request
             return null;
         }
     }
+
+    /**
+     * Unset given POST parameter
+     * @param string $parameter
+     * @return void
+     */
+    public function unsetPost($parameter)
+    {
+        if (isset($this->postParams[$parameter]))
+        {
+            unset($this->postParams[$parameter]);
+            unset($this->requestParams[$parameter]);
+        }
+    }
+
+    /**
+     * Unset given GET parameter
+     * @param string $parameter
+     * @return void
+     */
+    public function unsetGet($parameter)
+    {
+        if (isset($this->getParams[$parameter]))
+        {
+            unset($this->getParams[$parameter]);
+            unset($this->requestParams[$parameter]);
+        }
+    }
 }

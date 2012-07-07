@@ -92,6 +92,18 @@ class RequestTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals(null, $this->object->getRequest('failure'));
     }
 
+    public function testUnsetGet()
+    {
+        $this->object->unsetGet('nor');
+        $this->assertNull($this->object->getGet('nor'));
+    }
+
+    public function testUnsetPost()
+    {
+        $this->object->unsetPost('not');
+        $this->assertNull($this->object->getGet('not'));
+    }
+
 }
 
 function D()
