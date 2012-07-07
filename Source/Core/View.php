@@ -1,5 +1,5 @@
 <?php
-namespace keijoCMS\Core;
+namespace JSFrameworkS\Core;
 
 abstract class View
 {
@@ -27,7 +27,7 @@ abstract class View
         }
         else
         {
-            throw new \keijoCMS\View\Exception(
+            throw new \JSFrameworkS\View\Exception(
                 "Unable to set non-existing view property '$property'"
             );
         }
@@ -48,7 +48,7 @@ abstract class View
         }
         else
         {
-            throw new \keijoCMS\View\Exception(
+            throw new \JSFrameworkS\View\Exception(
                 "Unable to bind non-existing view property '$property'"
             );
         }

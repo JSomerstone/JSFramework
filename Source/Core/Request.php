@@ -1,8 +1,11 @@
 <?php
-namespace keijoCMS\Core;
+namespace JSFrameworkS\Core;
 
 class Request
 {
+    private $controllerName = '';
+    private $actionName = '';
+
     /**
      * Placeholder for both POST and GET params
      * @var array
@@ -26,6 +29,8 @@ class Request
      */
     public function __construct()
     {
+        $this->_parseHttpRequest($_SERVER['REQUEST_URI']);
+
         $this->postParams = $_POST;
         $this->getParams = $_GET;
 
@@ -33,6 +38,16 @@ class Request
 
         $_GET = array();
         $_POST = array();
+    }
+
+    public function getController()
+    {
+        return $this->controllerName;
+    }
+
+    public function getAction()
+    {
+        return $this->actionName;
     }
 
     /**
@@ -127,5 +142,43 @@ class Request
             unset($this->getParams[$parameter]);
             unset($this->requestParams[$parameter]);
         }
+    }
+
+    private function _parseHttpRequest($url)
+    {
+        // Remove possible '/' sign from the beginning of the URL
+        $url = ltrim($url, '/');
+
+        $sitePrefix = Settings::get('SITE','PATH_PREFIX');
+        $url = preg_replace("/^$sitePrefix\/?/", '', $url);
+
+        $urlParts = explode('/', $url);
+        D($urlParts);
+
+        if (isset($urlParts[0]))
+        {
+            $this->controllerName = $urlParts[0];
+            unset($urlParts[0]);
+        }
+
+        if (isset($urlParts[1]))
+        {
+            $this->actionName = $urlParts[1];
+            unset($urlParts[1]);
+        }
+
+        if (count($urlParts))
+        {
+            foreach ($urlParts as $getParam)
+            {
+                $this->_parseGetParameter($getParam);
+            }
+        }
+    }
+
+    private function _parseGetParameter($getParamValuePair)
+    {
+        $parts = explode(':', $getParamValuePair, 2);
+        $_GET[$parts[0]] = $parts[1];
     }
 }

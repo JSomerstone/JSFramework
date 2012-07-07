@@ -11,7 +11,7 @@ function autoloadClass($className)
 
     $namespaceParts = explode('\\', $className);
 
-    if ($namespaceParts[0] === 'keijoCMS')
+    if ($namespaceParts[0] === 'JSFrameworkS')
     {
         array_shift($namespaceParts);
     }
@@ -28,5 +28,5 @@ spl_autoload_register("autoloadClass");
 
 function D($value)
 {
-    var_dump($value);
+    var_dump($value); echo '<br/>';
 }

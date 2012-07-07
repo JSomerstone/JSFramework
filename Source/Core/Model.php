@@ -1,5 +1,5 @@
 <?php
-namespace keijoCMS\Core;
+namespace JSFrameworkS\Core;
 
 abstract class Model
 {

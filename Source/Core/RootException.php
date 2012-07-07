@@ -1,5 +1,5 @@
 <?php
-namespace keijoCMS\Core;
+namespace JSFrameworkS\Core;
 
 class RootException extends \Exception
 {

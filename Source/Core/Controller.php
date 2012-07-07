@@ -1,24 +1,24 @@
 <?php
-namespace keijoCMS\Core;
+namespace JSFrameworkS\Core;
 
 abstract class Controller
 {
     /**
      * Placeholder for View-object
-     * @var keijoCMS\Core\View
+     * @var JSFrameworkS\Core\View
      */
     public $view;
 
     /**
      * Request-object
-     * @var keijoCMS\Core\Request
+     * @var JSFrameworkS\Core\Request
      */
     protected $request;
-    protected $requestedAction = 'index';
 
     public function __construct(Request $requestObject)
     {
         $this->request = $requestObject;
+        $this->view = new \JSFrameworkS\View\EmptyView();
     }
 
     protected function setup()
@@ -40,8 +40,7 @@ abstract class Controller
      */
     protected function getRequestedAction()
     {
-        $this->requestedAction = $this->request->getGet('action') ?: 'index';
-        return $this->requestedAction;
+        return $this->request->getAction() ?: 'index';
     }
 
 
@@ -58,12 +57,16 @@ abstract class Controller
 
             $this->teardown();
         }
-        catch (\keijoCMS\View\Exception $e)
+        catch (\JSFrameworkS\View\Exception $e)
         {
             $this->view->set('errorMessage', 'View reported an error : ' . $e->getMessage());
             $this->view->setErrorCode(View::ERROR_CODE_INTERNAL_ERROR);
         }
-        catch (\keijoCMS\Core\RootException $e)
+        catch (\JSFrameworkS\Controller\Exception $e)
+        {
+            $this->view->setErrorCode(View::ERROR_CODE_NOT_FOUND);
+        }
+        catch (\JSFrameworkS\Core\RootException $e)
         {
             $this->view->set('errorMessage', 'Well, someone f****ed up : '. $e->getMessage());
             $this->view->setErrorCode(View::ERROR_CODE_INTERNAL_ERROR);
@@ -105,7 +108,7 @@ abstract class Controller
         }
         else
         {
-            throw new \keijoCMS\Controller\Exception(sprintf(
+            throw new \JSFrameworkS\Controller\Exception(sprintf(
                 'Controller %s method %s is not callable',
                 get_class($this),
                 $actionName
@@ -121,7 +124,7 @@ abstract class Controller
      */
     protected function setView(&$viewObject)
     {
-        if (! $viewObject instanceof \keijoCMS\Core\View)
+        if (! $viewObject instanceof \JSFrameworkS\Core\View)
         {
             throw new RootException('Invalid View-object given');
         }
