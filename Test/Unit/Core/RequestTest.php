@@ -2,7 +2,7 @@
 
 namespace keijoCMS\Core;
 
-require_once dirname(__FILE__) . '/../../../Core/Request.php';
+require_once dirname(__FILE__) . '/../../../Source/Core/Request.php';
 
 /**
  * Test class for Request.
