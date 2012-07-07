@@ -26,7 +26,3 @@ function autoloadClass($className)
 
 spl_autoload_register("autoloadClass");
 
-function D($value)
-{
-    var_dump($value); echo '<br/>';
-}

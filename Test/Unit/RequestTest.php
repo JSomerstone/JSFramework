@@ -1,13 +1,15 @@
 <?php
 
-namespace JSFramework\Core;
+namespace JSFramework\Test\Unit;
 
-require_once dirname(__FILE__) . '/../../../Source/Core/Request.php';
+require __DIR__ . '/../testAutoloader.php';
+require_once __DIR__ . '/../../Source/Request.php';
 
 /**
  * Test class for Request.
  */
-class RequestTest extends \PHPUnit_Framework_TestCase {
+class RequestTest extends TestCase
+{
 
     /**
      * @var Request
@@ -24,7 +26,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase {
         $_GET = $this->defualtGet;
         $_POST = $this->defualtPost;
 
-        $this->object = new Request();
+        $this->object = new \JSFramework\Request();
     }
 
     /**
@@ -104,12 +106,4 @@ class RequestTest extends \PHPUnit_Framework_TestCase {
         $this->assertNull($this->object->getGet('not'));
     }
 
-}
-
-function D()
-{
-    $arguments = func_get_args();
-    echo "\n";
-    foreach ($arguments as $arg)
-        var_dump($arg);
 }
