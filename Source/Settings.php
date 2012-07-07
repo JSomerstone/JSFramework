@@ -26,7 +26,5 @@ abstract class Settings
             is_null($setting)
                 ? self::$pageSettings[$context]
                 : self::$pageSettings[$context][$setting];
-
-
     }
 }

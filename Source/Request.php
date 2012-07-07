@@ -29,7 +29,11 @@ class Request
      */
     public function __construct()
     {
-        $this->_parseHttpRequest($_SERVER['REQUEST_URI']);
+        $this->_parseHttpRequest(
+            isset($_SERVER['REQUEST_URI'])
+                ? $_SERVER['REQUEST_URI']
+                : null
+        );
 
         $this->postParams = $_POST;
         $this->getParams = $_GET;
@@ -149,11 +153,13 @@ class Request
         // Remove possible '/' sign from the beginning of the URL
         $url = ltrim($url, '/');
 
-        $sitePrefix = Settings::get('SITE','PATH_PREFIX');
-        $url = preg_replace("/^$sitePrefix\/?/", '', $url);
+        if (defined('SITE_PATH_PREFIX') && SITE_PATH_PREFIX)
+        {
+            $sitePrefix = SITE_PATH_PREFIX;
+            $url = preg_replace("/^$sitePrefix\/?/", '', $url);
+        }
 
         $urlParts = explode('/', $url);
-        D($urlParts);
 
         if (isset($urlParts[0]))
         {
@@ -171,7 +177,10 @@ class Request
         {
             foreach ($urlParts as $getParam)
             {
-                $this->_parseGetParameter($getParam);
+                if (!empty($getParam))
+                {
+                    $this->_parseGetParameter($getParam);
+                }
             }
         }
     }

@@ -22,10 +22,9 @@ class RequestTest extends TestCase
      * Sets up the fixture, for example, opens a network connection.
      * This method is called before a test is executed.
      */
-    protected function setUp() {
-        $_GET = $this->defualtGet;
-        $_POST = $this->defualtPost;
-
+    protected function setUp()
+    {
+        $this->fakeRequest('Pager', 'ShowPage', $this->defualtGet, $this->defualtPost);
         $this->object = new \JSFramework\Request();
     }
 
@@ -38,7 +37,7 @@ class RequestTest extends TestCase
     }
 
     /**
-     * @covers keijoCMS\Core\Request::__contstruct
+     * @covers JSFramework\Request::__construct
      */
     public function test__construct()
     {
@@ -51,7 +50,7 @@ class RequestTest extends TestCase
     }
 
     /**
-     * @covers keijoCMS\Core\Request::getPost
+     * @covers JSFramework\Request::getPost
      */
     public function testGetPost()
     {
@@ -65,7 +64,7 @@ class RequestTest extends TestCase
     }
 
     /**
-     * @covers keijoCMS\Core\Request::getGet
+     * @covers JSFramework\Request::getGet
      */
     public function testGetGet()
     {
@@ -79,7 +78,7 @@ class RequestTest extends TestCase
     }
 
     /*
-     * @covers keijoCMS\Core\Request::getRequest
+     * @covers JSFramework\Request::getRequest
      */
     public function testGetRequest()
     {

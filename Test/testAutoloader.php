@@ -7,18 +7,17 @@ function autoloadTestClass($className)
 {
 
     $namespaceParts = explode('\\', $className);
-    D($namespaceParts);
-    if ($namespaceParts[0] === 'JSFramework')
+    if ( isset($namespaceParts[0]) && $namespaceParts[0] === 'JSFramework')
     {
-        array_shift($namespaceParts);
+        unset($namespaceParts[0]);
     }
 
-    if ($namespaceParts[1] != 'Test')
+    if (isset($namespaceParts[1]) && $namespaceParts[1] != 'Test')
     {
         array_unshift($namespaceParts, 'Source');
     }
 
-    D($namespaceParts);
+
     $pathToFile = __DIR__ . '/../' . implode(DS, $namespaceParts) . '.php';
 
     if (!file_exists($pathToFile))
