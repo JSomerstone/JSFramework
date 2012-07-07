@@ -4,7 +4,12 @@ namespace JSFramework\Test\Unit;
 
 class TestCase extends \PHPUnit_Framework_TestCase
 {
-    protected function fakeRequest($controller, $method, $getParams = array(), $postParams = array())
+    protected function fakeRequest(
+            $controller,
+            $method,
+            $getParams = array(),
+            $postParams = array()
+    )
     {
         $fakeUri = sprintf('/%s/%s/', $controller, $method);
         if (!empty($getParams))

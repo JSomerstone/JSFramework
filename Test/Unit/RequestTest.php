@@ -18,6 +18,7 @@ class RequestTest extends TestCase
 
     protected $defualtPost = array('not' => 'empty');
     protected $defualtGet = array('nor' => 'this');
+
     /**
      * Sets up the fixture, for example, opens a network connection.
      * This method is called before a test is executed.
@@ -105,4 +106,28 @@ class RequestTest extends TestCase
         $this->assertNull($this->object->getGet('not'));
     }
 
+    public function testGetController()
+    {
+        $this->fakeRequest('Pager', 'ShowPage', $this->defualtGet, $this->defualtPost);
+        $object = new \JSFramework\Request();
+
+        $this->assertEquals('Pager', $object->getController());
+    }
+
+    public function testGetAction()
+    {
+        $this->fakeRequest('Pager', 'ShowPage', $this->defualtGet, $this->defualtPost);
+        $object = new \JSFramework\Request();
+
+        $this->assertEquals('ShowPage', $object->getAction());
+    }
+
+    public function testParsingRequest()
+    {
+        define('SITE_PATH_PREFIX', 'FakePrefix');
+        $this->fakeRequest('FakePrefix/Index', 'main');
+        $object = new \JSFramework\Request();
+
+        $this->assertEquals('Index', $object->getController());
+    }
 }
