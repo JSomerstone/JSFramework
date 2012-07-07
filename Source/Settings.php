@@ -1,5 +1,5 @@
 <?php
-namespace JSFrameworkS\Core;
+namespace JSFramework;
 
 abstract class Settings
 {

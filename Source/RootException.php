@@ -1,5 +1,5 @@
 <?php
-namespace JSFrameworkS\Core;
+namespace JSFramework;
 
 class RootException extends \Exception
 {

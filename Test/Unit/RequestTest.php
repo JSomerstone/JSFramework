@@ -1,6 +1,6 @@
 <?php
 
-namespace keijoCMS\Core;
+namespace JSFramework\Core;
 
 require_once dirname(__FILE__) . '/../../../Source/Core/Request.php';
 

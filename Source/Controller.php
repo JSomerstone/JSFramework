@@ -1,24 +1,24 @@
 <?php
-namespace JSFrameworkS\Core;
+namespace JSFramework;
 
 abstract class Controller
 {
     /**
      * Placeholder for View-object
-     * @var JSFrameworkS\Core\View
+     * @var JSFramework\View
      */
     public $view;
 
     /**
      * Request-object
-     * @var JSFrameworkS\Core\Request
+     * @var JSFramework\Request
      */
     protected $request;
 
     public function __construct(Request $requestObject)
     {
         $this->request = $requestObject;
-        $this->view = new \JSFrameworkS\View\EmptyView();
+        $this->view = new \JSFramework\View\EmptyView();
     }
 
     protected function setup()
@@ -57,16 +57,16 @@ abstract class Controller
 
             $this->teardown();
         }
-        catch (\JSFrameworkS\View\Exception $e)
+        catch (\JSFramework\View\Exception $e)
         {
             $this->view->set('errorMessage', 'View reported an error : ' . $e->getMessage());
             $this->view->setErrorCode(View::ERROR_CODE_INTERNAL_ERROR);
         }
-        catch (\JSFrameworkS\Controller\Exception $e)
+        catch (\JSFramework\Controller\Exception $e)
         {
             $this->view->setErrorCode(View::ERROR_CODE_NOT_FOUND);
         }
-        catch (\JSFrameworkS\Core\RootException $e)
+        catch (\JSFramework\RootException $e)
         {
             $this->view->set('errorMessage', 'Well, someone f****ed up : '. $e->getMessage());
             $this->view->setErrorCode(View::ERROR_CODE_INTERNAL_ERROR);
@@ -108,7 +108,7 @@ abstract class Controller
         }
         else
         {
-            throw new \JSFrameworkS\Controller\Exception(sprintf(
+            throw new \JSFramework\Controller\Exception(sprintf(
                 'Controller %s method %s is not callable',
                 get_class($this),
                 $actionName
@@ -124,7 +124,7 @@ abstract class Controller
      */
     protected function setView(&$viewObject)
     {
-        if (! $viewObject instanceof \JSFrameworkS\Core\View)
+        if (! $viewObject instanceof \JSFramework\View)
         {
             throw new RootException('Invalid View-object given');
         }

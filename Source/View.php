@@ -1,5 +1,5 @@
 <?php
-namespace JSFrameworkS\Core;
+namespace JSFramework;
 
 abstract class View
 {
@@ -27,7 +27,7 @@ abstract class View
         }
         else
         {
-            throw new \JSFrameworkS\View\Exception(
+            throw new \JSFramework\View\Exception(
                 "Unable to set non-existing view property '$property'"
             );
         }
@@ -48,7 +48,7 @@ abstract class View
         }
         else
         {
-            throw new \JSFrameworkS\View\Exception(
+            throw new \JSFramework\View\Exception(
                 "Unable to bind non-existing view property '$property'"
             );
         }
