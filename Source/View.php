@@ -9,7 +9,7 @@ abstract class View
     const ERROR_CODE_AUTHORIZATION_ERROR = 406;
     const ERROR_CODE_NOT_FOUND = 404;
 
-    protected $errorMessage = null;
+    protected $errorMessages = array();
     protected $errorCode = self::ERROR_CODE_OK;
 
     public abstract function __toString();
@@ -27,7 +27,7 @@ abstract class View
         }
         else
         {
-            throw new \JSFramework\View\Exception(
+            throw new \JSFramework\Exception\RootException(
                 "Unable to set non-existing view property '$property'"
             );
         }
@@ -48,7 +48,7 @@ abstract class View
         }
         else
         {
-            throw new \JSFramework\View\Exception(
+            throw new \JSFramework\Exception\RootException(
                 "Unable to bind non-existing view property '$property'"
             );
         }
@@ -59,31 +59,27 @@ abstract class View
         $this->errorCode = $errorCode;
     }
 
+    public function addErrorMessage($message)
+    {
+        $this->errorMessages[] = $message;
+    }
+
     public function output()
     {
         $this->_setHeaderAccordingToErrorCode();
-
-        if (null !== $this->errorMessage)
-        {
-            echo $this->errorMessage, "\n";
-        }
-        else
-        {
-            echo $this;
-        }
+        echo $this;
     }
 
     protected function _setHeaderAccordingToErrorCode()
     {
         switch ($this->errorCode)
         {
-            default :
-            case self::ERROR_CODE_OK :
-                NativeFunctions::header('HTTP/1.1 200 Ok');
-                break;
-
             case self::ERROR_CODE_INTERNAL_ERROR :
                 NativeFunctions::header('HTTP/1.1 500 Internal Server Error');
+                break;
+
+            case self::ERROR_CODE_OK :
+                NativeFunctions::header('HTTP/1.1 200 Ok');
                 break;
         }
     }

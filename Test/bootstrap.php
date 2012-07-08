@@ -1,7 +1,10 @@
 <?php
 defined('NL') OR define('NL', "\n");
+defined('TIMEZONE') OR define('TIMEZONE', 'Europe/Helsinki');
+date_default_timezone_set(TIMEZONE);
 
 require 'testAutoloader.php';
+loadMock('JSFramework\NativeFunctions');
 
 function D()
 {
@@ -9,6 +12,15 @@ function D()
     echo "\n";
     foreach ($arguments as $arg)
         var_dump($arg);
+}
+
+function DE()
+{
+    $arguments = func_get_args();
+    echo "\n";
+    foreach ($arguments as $arg)
+        var_dump($arg);
+    exit();
 }
 
 function loadMock($className)

@@ -22,7 +22,7 @@ function autoloadTestClass($className)
 
     if (!file_exists($pathToFile))
     {
-        die (sprintf(
+        throw new Exception (sprintf(
                 "Unable to find class '%s' from '%s' with include path '%s'",
                 $className, $pathToFile, get_include_path()
         ));
