@@ -18,7 +18,7 @@ function autoloadTestClass($className)
     }
 
 
-    $pathToFile = __DIR__ . '/../' . implode(DS, $namespaceParts) . '.php';
+    $pathToFile = dirname(__DIR__) . '/' . implode(DS, $namespaceParts) . '.php';
 
     if (!file_exists($pathToFile))
     {
@@ -27,7 +27,7 @@ function autoloadTestClass($className)
                 $className, $pathToFile, get_include_path()
         ));
     }
-    require $pathToFile;
+    require_once $pathToFile;
 }
 
 spl_autoload_register("autoloadTestClass");

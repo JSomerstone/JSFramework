@@ -62,6 +62,7 @@ abstract class View
     public function output()
     {
         $this->_setHeaderAccordingToErrorCode();
+
         if (null !== $this->errorMessage)
         {
             echo $this->errorMessage, "\n";
@@ -72,17 +73,17 @@ abstract class View
         }
     }
 
-    private function _setHeaderAccordingToErrorCode()
+    protected function _setHeaderAccordingToErrorCode()
     {
         switch ($this->errorCode)
         {
             default :
             case self::ERROR_CODE_OK :
-                header('HTTP/1.1 200 Ok');
+                NativeFunctions::header('HTTP/1.1 200 Ok');
                 break;
 
             case self::ERROR_CODE_INTERNAL_ERROR :
-                header('HTTP/1.1 500 Internal Server Error');
+                NativeFunctions::header('HTTP/1.1 500 Internal Server Error');
                 break;
         }
     }

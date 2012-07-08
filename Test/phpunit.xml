@@ -19,12 +19,14 @@
         <testsuite name="Unit Tests">
             <directory suffix="Test.php">Unit/</directory>
         </testsuite>
+        <testsuite name="Module Tests">
+            <directory suffix="Test.php">Module/</directory>
+        </testsuite>
     </testsuites>
 
     <filter>
         <whitelist>
             <directory suffix=".php">../Source</directory>
-
         </whitelist>
     </filter>
 

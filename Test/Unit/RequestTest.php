@@ -2,9 +2,6 @@
 
 namespace JSFramework\Test\Unit;
 
-require __DIR__ . '/../testAutoloader.php';
-require_once __DIR__ . '/../../Source/Request.php';
-
 /**
  * Test class for Request.
  */

@@ -15,10 +15,10 @@ abstract class Controller
      */
     protected $request;
 
-    public function __construct(Request $requestObject)
+    public function __construct(Request $requestObject, View $viewObject = null)
     {
         $this->request = $requestObject;
-        $this->view = new \JSFramework\View\EmptyView();
+        $this->view = $viewObject;
     }
 
     protected function setup()
@@ -57,58 +57,39 @@ abstract class Controller
 
             $this->teardown();
         }
-        catch (\JSFramework\View\Exception $e)
+        catch (\JSFramework\Exception\NotFoundException $e)
         {
-            $this->view->set('errorMessage', 'View reported an error : ' . $e->getMessage());
-            $this->view->setErrorCode(View::ERROR_CODE_INTERNAL_ERROR);
+            $this->view && $this->view->setErrorCode(View::ERROR_CODE_NOT_FOUND);
         }
-        catch (\JSFramework\Controller\Exception $e)
+        catch (\JSFramework\Exception\RootException $e)
         {
-            $this->view->setErrorCode(View::ERROR_CODE_NOT_FOUND);
-        }
-        catch (\JSFramework\RootException $e)
-        {
-            $this->view->set('errorMessage', 'Well, someone f****ed up : '. $e->getMessage());
-            $this->view->setErrorCode(View::ERROR_CODE_INTERNAL_ERROR);
+            $this->view && $this->view->set('errorMessage', 'Well, someone f****ed up : '. $e->getMessage());
+            $this->view && $this->view->setErrorCode(View::ERROR_CODE_INTERNAL_ERROR);
         }
         catch (\Exception $fatal)
         {
             $errorHandle = fopen(STDERR, 'a');
             fwrite($errorHandle, $fatal->getMessage() . NL . $fatal->getTraceAsString() . NL);
-            $this->view->set('errorMessage', 'WTF just happened?!?');
-            $this->view->setErrorCode(View::ERROR_CODE_INTERNAL_ERROR);
+            $this->view && $this->view->set('errorMessage', 'WTF just happened?!?');
+            $this->view && $this->view->setErrorCode(View::ERROR_CODE_INTERNAL_ERROR);
         }
 
-        $this->view->output();
-    }
-
-    /**
-     * Returns reference of View's proparty $propartyName
-     * Shortcut to $this->view->bind()
-     *
-     * @param string $propertyName
-     * @param misc $initialValue, optional
-     * @return misc
-     */
-    protected function &bindView($propertyName, $initialValue = null)
-    {
-        return $this->view->bind($propertyName, $initialValue);
+        $this->view && $this->view->output();
     }
 
     /**
      * Commit given action
      * @param string $actionName
      */
-    public function commitAction($actionName)
+    protected function commitAction($actionName)
     {
-
         if (method_exists($this, $actionName))
         {
             $this->$actionName();
         }
         else
         {
-            throw new \JSFramework\Controller\Exception(sprintf(
+            throw new \JSFramework\Exception\NotFoundException(sprintf(
                 'Controller %s method %s is not callable',
                 get_class($this),
                 $actionName

@@ -1,6 +1,7 @@
 <?php
-
 defined('NL') OR define('NL', "\n");
+
+require 'testAutoloader.php';
 
 function D()
 {
@@ -16,7 +17,6 @@ function loadMock($className)
     $mockName = 'Mock/' . $mockName;
     $mockLocation = str_replace('\\', '/', $mockName) . '.php';
 
-    D('Loading', $mockLocation);
     if (!file_exists($mockLocation))
     {
         throw new Exception(sprintf(
@@ -25,6 +25,6 @@ function loadMock($className)
     }
     else
     {
-        require __DIR__ . DS . $mockLocation;
+        require_once __DIR__ . DS . $mockLocation;
     }
 }

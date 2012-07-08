@@ -22,4 +22,17 @@ class TestCase extends \PHPUnit_Framework_TestCase
         $_SERVER['REQUEST_URI'] = $fakeUri;
         $_POST = $postParams;
     }
+
+    public function assertType($variable, $expectedType)
+    {
+        if (gettype($variable) !== $expectedType)
+        {
+            $this->fail(sprintf(
+                'Failed asserting that type "%s" was "%s"',
+                gettype($variable),
+                $expectedType
+            ));
+        }
+        else { $this->assertTrue(true); }
+    }
 }
