@@ -158,6 +158,11 @@ class Request
             $sitePrefix = SITE_PATH_PREFIX;
             $url = preg_replace("/^$sitePrefix\/?/", '', $url);
         }
+        //Ignore traditional GET-parameters indicated with "?"
+        if (strpos($url, '?'))
+        {
+            $url = strstr($url, '?', true);
+        }
 
         $urlParts = explode('/', $url);
 

@@ -75,6 +75,20 @@ class RequestTest extends TestCase
         $this->assertEquals(null, $this->object->getPost('failure'));
     }
 
+    /**
+     * @test
+     */
+    public function mixingTwoWaysOfGivingGetParametersShouldSucceed()
+    {
+        //Give request uri like "User/View/id:13?fuu=bar"
+        $this->fakeRequest('User', 'View', array('id' => '13'), array(), array('fuu' => 'bar'));
+        $this->object = new \JSFramework\Request();
+
+        //When asking for get parameter "id", should receive "13"
+        $this->assertEquals('13', $this->object->getGet('id'), 'Get parameters parsed wrong');
+        //and when requesting for "fuu" should get "bar"
+        $this->assertEquals('bar', $this->object->getGet('fuu'), 'Get parameters parsed wrong');
+    }
     /*
      * @covers JSFramework\Request::getRequest
      */

@@ -49,6 +49,7 @@ abstract class Controller
      */
     public function run()
     {
+        ob_start();
         try
         {
             $this->setup();
@@ -73,6 +74,10 @@ abstract class Controller
             $this->view && $this->view->set('errorMessage', 'WTF just happened?!?');
             $this->view && $this->view->setErrorCode(View::ERROR_CODE_INTERNAL_ERROR);
         }
+
+        //TODO: log this shit
+        $unexpectedOutput = ob_get_clean();
+        echo $unexpectedOutput;
 
         $this->view && $this->view->output();
     }

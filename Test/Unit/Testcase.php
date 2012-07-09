@@ -8,18 +8,31 @@ class TestCase extends \PHPUnit_Framework_TestCase
             $controller,
             $method,
             $getParams = array(),
-            $postParams = array()
+            $postParams = array(),
+            $traditinalGet = array()
     )
     {
-        $fakeUri = sprintf('/%s/%s/', $controller, $method);
+        $fakeUri = sprintf('/%s/%s', $controller, $method);
         if (!empty($getParams))
         {
             foreach ($getParams as $param => $value)
             {
-                $fakeUri .= "$param:$value/";
+                $fakeUri .= "/$param:$value";
             }
         }
+
+        if (!empty($traditinalGet))
+        {
+            $fakeUri .= '?';
+            foreach ($traditinalGet as $param => $value)
+            {
+                $fakeUri .= "$param=$value&";
+            }
+            $fakeUri = trim($fakeUri, '&'); //remove the last "&"
+        }
+
         $_SERVER['REQUEST_URI'] = $fakeUri;
+        $_GET = $traditinalGet;
         $_POST = $postParams;
     }
 
