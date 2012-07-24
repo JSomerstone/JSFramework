@@ -1,5 +1,5 @@
 <?php
-namespace JSFramework;
+namespace JSomerstone\JSFramework;
 
 abstract class Controller
 {

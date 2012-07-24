@@ -1,5 +1,5 @@
 <?php
-namespace JSFramework;
+namespace JSomerstone\JSFramework;
 
 abstract class View
 {
@@ -12,25 +12,16 @@ abstract class View
     protected $errorMessages = array();
     protected $errorCode = self::ERROR_CODE_OK;
 
-    public abstract function __toString();
+    protected $data = array();
 
-        /**
+    /**
      * Set views property $property to value $value
      * @param string $property
      * @param misc $value
      */
     public function set($property, $value)
     {
-        if (isset($this->$property) || property_exists($this, $property))
-        {
-            $this->$property = $value;
-        }
-        else
-        {
-            throw new \JSFramework\Exception\RootException(
-                "Unable to set non-existing view property '$property'"
-            );
-        }
+        $this->data[$property] = $value;
     }
 
     /**
@@ -42,16 +33,7 @@ abstract class View
      */
     public function bind($property, &$value = null)
     {
-        if (isset($this->$property) || property_exists($this, $property))
-        {
-            $this->$property = &$value;
-        }
-        else
-        {
-            throw new \JSFramework\Exception\RootException(
-                "Unable to bind non-existing view property '$property'"
-            );
-        }
+        $this->data[$property] = &$value;
     }
 
     public function setErrorCode($errorCode)
@@ -67,18 +49,25 @@ abstract class View
     public function output()
     {
         $this->_setHeaderAccordingToErrorCode();
-        echo $this;
+        echo $this->printOutput();
     }
+
+    public abstract function printOutput();
 
     protected function _setHeaderAccordingToErrorCode()
     {
         switch ($this->errorCode)
         {
+            case self::ERROR_CODE_NOT_FOUND :
+                NativeFunctions::header('HTTP/1.1 404 Not Found');
+                break;
+
             case self::ERROR_CODE_INTERNAL_ERROR :
                 NativeFunctions::header('HTTP/1.1 500 Internal Server Error');
                 break;
 
             case self::ERROR_CODE_OK :
+            default :
                 NativeFunctions::header('HTTP/1.1 200 Ok');
                 break;
         }

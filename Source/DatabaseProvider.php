@@ -1,5 +1,5 @@
 <?php
-namespace JSFramework;
+namespace JSomerstone\JSFramework;
 
 /**
  * Abstract class for getting mysqli-instances

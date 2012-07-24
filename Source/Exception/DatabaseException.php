@@ -1,4 +1,4 @@
 <?php
 
-namespace JSFramework\Exception;
+namespace JSomerstone\JSFramework\Exception;
 class DatabaseException extends RootException {}

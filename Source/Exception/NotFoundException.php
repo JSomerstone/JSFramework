@@ -1,3 +1,3 @@
 <?php
-namespace JSFramework\Exception;
+namespace JSomerstone\JSFramework\Exception;
 class NotFoundException extends RootException {}

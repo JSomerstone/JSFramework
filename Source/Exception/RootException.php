@@ -1,5 +1,5 @@
 <?php
-namespace JSFramework\Exception;
+namespace JSomerstone\JSFramework\Exception;
 
 class RootException extends \Exception
 {

@@ -1,10 +1,12 @@
 <?php
-namespace JSFramework;
+namespace JSomerstone\JSFramework;
 
 class Request
 {
     private $controllerName = '';
     private $actionName = '';
+
+    protected $requestPath = array();
 
     /**
      * Placeholder for both POST and GET params
@@ -25,6 +27,12 @@ class Request
     protected $getParams = array();
 
     /**
+     * Placeholder for URI params
+     * @var array
+     */
+    protected $uriParams = array();
+
+    /**
      * Will initialize Request object and clear possible $_GET and $_POST parameters
      */
     public function __construct()
@@ -38,7 +46,7 @@ class Request
         $this->postParams = $_POST;
         $this->getParams = $_GET;
 
-        $this->requestParams = array_merge($this->getParams, $this->postParams);
+        $this->requestParams = array_merge($this->getParams, $this->uriParams, $this->postParams);
 
         $_GET = array();
         $_POST = array();
@@ -46,12 +54,21 @@ class Request
 
     public function getController()
     {
-        return $this->controllerName;
+        return isset($this->requestPath[0])
+                    ? $this->requestPath[0]
+                    : null;
     }
 
     public function getAction()
     {
-        return $this->actionName;
+        return isset($this->requestPath[1])
+                    ? $this->requestPath[1]
+                    : null;
+    }
+
+    public function getRequestPath()
+    {
+        return $this->requestPath;
     }
 
     /**
@@ -166,33 +183,34 @@ class Request
 
         $urlParts = explode('/', $url);
 
-        if (isset($urlParts[0]))
-        {
-            $this->controllerName = $urlParts[0];
-            unset($urlParts[0]);
-        }
+        $uriParamRegexp = '/^[a-z0-9_.]+:.+$/';
 
-        if (isset($urlParts[1]))
+        foreach ($urlParts as $level => $value)
         {
-            $this->actionName = $urlParts[1];
-            unset($urlParts[1]);
+            if (empty($value)) {
+                continue;
+            } elseif ( preg_match($uriParamRegexp, $value)) {
+                break;
+            } else {
+                $this->requestPath[] = $value;
+                unset ($urlParts[$level]);
+            }
         }
-
         if (count($urlParts))
         {
-            foreach ($urlParts as $getParam)
+            foreach ($urlParts as $uriParam)
             {
-                if (!empty($getParam))
+                if (!empty($uriParam))
                 {
-                    $this->_parseGetParameter($getParam);
+                    $this->_parseUriParameters($uriParam);
                 }
             }
         }
     }
 
-    private function _parseGetParameter($getParamValuePair)
+    private function _parseUriParameters($uriParamValuePair)
     {
-        $parts = explode(':', $getParamValuePair, 2);
-        $_GET[$parts[0]] = $parts[1];
+        $parts = explode(':', $uriParamValuePair, 2);
+        $this->uriParams[$parts[0]] = $parts[1];
     }
 }

@@ -8,10 +8,12 @@ loadMock('JSFramework\NativeFunctions');
 
 function D()
 {
+    ob_end_flush();
     $arguments = func_get_args();
     echo "\n";
     foreach ($arguments as $arg)
         var_dump($arg);
+    ob_start();
 }
 
 function DE()
