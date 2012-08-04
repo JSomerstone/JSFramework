@@ -69,8 +69,7 @@ abstract class Controller
         }
         catch (\Exception $fatal)
         {
-            $errorHandle = fopen(STDERR, 'a');
-            fwrite($errorHandle, $fatal->getMessage() . NL . $fatal->getTraceAsString() . NL);
+            fwrite(STDERR, $fatal->getMessage() . NL . $fatal->getTraceAsString() . NL);
             $this->view && $this->view->set('errorMessage', 'WTF just happened?!?');
             $this->view && $this->view->setErrorCode(View::ERROR_CODE_INTERNAL_ERROR);
         }

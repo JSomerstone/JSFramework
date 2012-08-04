@@ -116,6 +116,28 @@ class Request
     }
 
     /**
+     * Get URI param with or without index
+     * if $param not given, will return all URI-params as an array
+     * @param string $param URI-parameter to return, optional
+     * @return string|array
+     */
+    public function getUri($param = null)
+    {
+        if (null === $param)
+        {
+            return $this->uriParams;
+        }
+        else if (isset($this->uriParams[$param]))
+        {
+            return $this->uriParams[$param];
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    /**
      * Get POST or GET param with or without index
      * if $param not given, will return all GET & POST-params as single array
      * @param string $param request parameter to return, optional
