@@ -58,11 +58,11 @@ abstract class Controller
 
             $this->teardown();
         }
-        catch (\JSFramework\Exception\NotFoundException $e)
+        catch (\JSomerstone\JSFramework\Exception\NotFoundException $e)
         {
             $this->view && $this->view->setErrorCode(View::ERROR_CODE_NOT_FOUND);
         }
-        catch (\JSFramework\Exception\RootException $e)
+        catch (\JSomerstone\JSFramework\Exception\RootException $e)
         {
             $this->view && $this->view->set('errorMessage', 'Well, someone f****ed up : '. $e->getMessage());
             $this->view && $this->view->setErrorCode(View::ERROR_CODE_INTERNAL_ERROR);
@@ -93,7 +93,7 @@ abstract class Controller
         }
         else
         {
-            throw new \JSFramework\Exception\NotFoundException(sprintf(
+            throw new \JSomerstone\JSFramework\Exception\NotFoundException(sprintf(
                 'Controller %s method %s is not callable',
                 get_class($this),
                 $actionName
