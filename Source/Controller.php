@@ -87,7 +87,9 @@ abstract class Controller
      */
     protected function commitAction($actionName)
     {
-        if (method_exists($this, $actionName))
+        // Requested method must be public in order to be commited via commitAction
+        $refl = new \ReflectionMethod($this, $actionName);
+        if (method_exists($this, $actionName) && $refl->isPublic())
         {
             $this->$actionName();
         }

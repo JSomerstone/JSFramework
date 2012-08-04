@@ -52,6 +52,11 @@ class Request
         $_POST = array();
     }
 
+    /**
+     * Get controller-part of request path
+     * If request did not contain controller-part, returns null
+     * @return string|null
+     */
     public function getController()
     {
         return isset($this->requestPath[0])
@@ -59,6 +64,11 @@ class Request
                     : null;
     }
 
+    /**
+     * Get action-part of request path
+     * If request did not contain action-part, returns null
+     * @return string|null
+     */
     public function getAction()
     {
         return isset($this->requestPath[1])
@@ -66,9 +76,22 @@ class Request
                     : null;
     }
 
-    public function getRequestPath()
+    /**
+     * Return full request path as array starting from index $fromIndex
+     * @param int $fromIndex Index to start request paht parts from, optional default "0"
+     * @return array
+     */
+    public function getRequestPath($fromIndex = 0)
     {
-        return $this->requestPath;
+        $request = array();
+        foreach ($this->requestPath as $index => $value)
+        {
+            if ($index >= $fromIndex)
+            {
+                $request[] = $value;
+            }
+        }
+        return $request;
     }
 
     /**
@@ -212,20 +235,10 @@ class Request
             if (empty($value)) {
                 continue;
             } elseif ( preg_match($uriParamRegexp, $value)) {
-                break;
+                $this->_parseUriParameters($uriParam);
             } else {
                 $this->requestPath[] = $value;
                 unset ($urlParts[$level]);
-            }
-        }
-        if (count($urlParts))
-        {
-            foreach ($urlParts as $uriParam)
-            {
-                if (!empty($uriParam))
-                {
-                    $this->_parseUriParameters($uriParam);
-                }
             }
         }
     }
