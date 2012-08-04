@@ -13,6 +13,7 @@ abstract class View
     protected $errorCode = self::ERROR_CODE_OK;
 
     protected $data = array();
+    protected $headers = array();
 
     /**
      * Set views property $property to value $value
@@ -22,6 +23,35 @@ abstract class View
     public function set($property, $value)
     {
         $this->data[$property] = $value;
+    }
+
+    /**
+     * Return value of set to $property, if not set returns null
+     * @param type $property
+     * @return null
+     */
+    public function get($property)
+    {
+        if (isset($this->data[$property])) {
+            return $this->data[$property];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Set views property $property to value $value
+     * @param string $property
+     * @param misc $value
+     */
+    public function setHeader($property, $value = null)
+    {
+        $headerString = $property;
+        $headerString .= is_null($value)
+                        ? ''
+                        : ' : ' .$value;
+
+        $this->headers[] = "$headerString" ;
     }
 
     /**
@@ -49,17 +79,34 @@ abstract class View
     public function output()
     {
         $this->_setHeaderAccordingToErrorCode();
+        $this->outputHeaders();
         echo $this->printOutput();
     }
 
     public abstract function printOutput();
 
+    /**
+     * Outputs the set headers via NativeFunctions
+     */
+    protected function outputHeaders()
+    {
+        foreach ($this->headers as $aHeader)
+        {
+            NativeFunctions::header($aHeader);
+        }
+    }
+
+    /**
+     * Adds "HTTP/1.1" header according to $this->errorCode
+     * Default 200
+     */
     protected function _setHeaderAccordingToErrorCode()
     {
         switch ($this->errorCode)
         {
             case self::ERROR_CODE_NOT_FOUND :
-                NativeFunctions::header('HTTP/1.1 404 Not Found');
+                $this->setHeader('HTTP/1.1 404 Not Found');
+                //NativeFunctions::header('HTTP/1.1 404 Not Found');
                 break;
 
             case self::ERROR_CODE_INTERNAL_ERROR :
