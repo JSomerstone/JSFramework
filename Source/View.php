@@ -26,6 +26,18 @@ abstract class View
     }
 
     /**
+     * Set multiple views properties with associative array
+     * @param array $propertyList
+     */
+    public function setAssoc(array $propertyList)
+    {
+        foreach ($propertyList as $property => $value)
+        {
+            $this->set($property, $value);
+        }
+    }
+
+    /**
      * Return value of set to $property, if not set returns null
      * @param type $property
      * @return null

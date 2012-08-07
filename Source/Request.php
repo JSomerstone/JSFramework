@@ -217,7 +217,7 @@ class Request
 
         if (defined('SITE_PATH_PREFIX') && SITE_PATH_PREFIX)
         {
-            $sitePrefix = SITE_PATH_PREFIX;
+            $sitePrefix = Lib\String::escapeSpecials(SITE_PATH_PREFIX);
             $url = preg_replace("/^$sitePrefix\/?/", '', $url);
         }
         //Ignore traditional GET-parameters indicated with "?"
