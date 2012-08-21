@@ -235,7 +235,7 @@ class Request
             if (empty($value)) {
                 continue;
             } elseif ( preg_match($uriParamRegexp, $value)) {
-                $this->_parseUriParameters($uriParam);
+                $this->_parseUriParameters($value);
             } else {
                 $this->requestPath[] = $value;
                 unset ($urlParts[$level]);
